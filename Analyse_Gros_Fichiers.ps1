@@ -1,41 +1,11 @@
+# 1. On lance la sélection du dossier et on stocke le résultat
+$dossier = python select_dir.py
 
-Write-Output
-Write-Output
-Write-Output
+# 2. Si un dossier a été choisi, on lance l'analyse
+if ($dossier) {
+    Write-Host "Analyse du dossier : $dossier"
+    python scan_files.py "$dossier"
 
-
-Write-Output
-
-$repertoire_base = python selection_dossier.py
-
-
-if (-not $repertoire_base) {
-    Write-Output
-    exit
+    # 3. Une fois le JSON généré, on lance l'interface graphique
+    python main_gui.py
 }
-
-
-if (-not (Test-Path $repertoire_base)) {
-    Write-Output
-    exit
-}
-
-Write-Output "Dossier sélectionné : $repertoire_base"
-
-
-Write-Output
-python analyse_fichiers.py "$repertoire_base"
-
-
-if (-not (Test-Path "gros_fichiers.json")) {
-    Write-Output "Erreur : fichier JSON non créé."
-    exit
-}
-
-Write-Output "Analyse terminée. Fichier JSON créé."
-
-
-Write-Output "Lancement de l'interface graphique..."
-python affichage_camembert.py
-
-Write-Output "Fin du script principal."
